@@ -41,7 +41,7 @@ final class Formatter
      */
     public function format(string $template, $input, array $parameters): string
     {
-        $parameters['name'] = $parameters['name'] ?? stringify($input);
+        $parameters['name'] = $parameters['name'] ?? $this->parameterStringifier->stringify('input',$input);
 
         return preg_replace_callback(
             '/{{(\w+)}}/',
