@@ -39,7 +39,10 @@ final class KeySet extends AbstractWrapper
      * @var Key[]
      */
     private $keyRules;
-
+    /**
+     * @var mixed[]
+     */
+    private $extraKeys = [];
     /**
      * Initializes the rule.
      *
@@ -129,6 +132,10 @@ final class KeySet extends AbstractWrapper
             }
 
             unset($input[$keyRule->getReference()]);
+        }
+
+        foreach ($input as $extraKey => &$ignoreValue) {
+            $this->extraKeys[] = $extraKey;
         }
 
         return count($input) == 0;

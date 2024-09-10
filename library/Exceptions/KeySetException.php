@@ -21,6 +21,7 @@ use function count;
 final class KeySetException extends GroupedValidationException implements NonOmissibleException
 {
     public const STRUCTURE = 'structure';
+    public const STRUCTURE_EXTRA = 'structure_extra';
 
     /**
      * {@inheritDoc}
@@ -30,6 +31,7 @@ final class KeySetException extends GroupedValidationException implements NonOmi
             self::NONE => 'All of the required rules must pass for {{name}}',
             self::SOME => 'These rules must pass for {{name}}',
             self::STRUCTURE => 'Must have keys {{keys}}',
+            self::STRUCTURE_EXTRA => 'Must not have keys {{extraKeys}}',
         ],
         self::MODE_NEGATIVE => [
             self::NONE => 'None of these rules must pass for {{name}}',
@@ -43,6 +45,10 @@ final class KeySetException extends GroupedValidationException implements NonOmi
      */
     protected function chooseTemplate(): string
     {
+        if (count($this->getParam('extraKeys'))) {
+            return self::STRUCTURE_EXTRA;
+        }
+
         if (count($this->getChildren()) === 0) {
             return self::STRUCTURE;
         }
